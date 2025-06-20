@@ -42,18 +42,8 @@ def main():
     # Note: Some themes might override background/foreground. 'clam' can be tricky with button backgrounds.
     # If background doesn't change, font should still apply.
 
-    # Generate Script Button
-    generate_button = ttk.Button(content_frame, text="Generate Script", command=generate_script_action, style='Custom.TButton')
-    generate_button.pack(pady=10, padx=5)
-
-    # Text area to display generated script
-    script_display_area = scrolledtext.ScrolledText(content_frame, width=60, height=10, wrap=tk.WORD)
-    script_display_area.pack(pady=(0,10), padx=5, fill=tk.BOTH, expand=True)
-    script_display_area.insert(tk.INSERT, "Generated script will appear here...")
-    script_display_area.configure(state='disabled') # Make it read-only initially
-
-    # Function to handle script generation and display (needs to be defined before button command)
-    def generate_script_action(): # Ensure this function is defined before being assigned to the button
+    # Function to handle script generation and display
+    def generate_script_action():
         task_name = task_name_entry.get().strip() # Get and strip whitespace
         if not task_name:
             messagebox.showerror("Error", "Task Name cannot be empty.")
@@ -66,21 +56,17 @@ def main():
         script_display_area.insert(tk.INSERT, generated_code)
         script_display_area.configure(state='disabled') # Make it read-only again
 
-    # Re-assign command to button if generate_script_action was defined after button creation
-    # This is a bit of a reorder, so let's make sure the function is defined first.
-    # The original code had the function definition after its first potential use by the button.
-    # To fix this, the function generate_script_action is moved up or button configured later.
-    # For this diff, I will assume the function definition is moved before this block.
-    # The previous diff did not include the function definition, so I will redefine it here to ensure order.
+    # Generate Script Button
+    generate_button = ttk.Button(content_frame, text="Generate Script", command=generate_script_action, style='Custom.TButton')
+    generate_button.pack(pady=10, padx=5)
 
-    # (The diff will show the function being moved, effectively)
-    # The button's command should be assigned after generate_script_action is defined.
-    # The previous code structure was:
-    # 1. Define button (referencing generate_script_action)
-    # 2. Define generate_script_action
-    # This is fine in Python as function names are just references.
-    # The issue was the Welcome Label was outside the content_frame.
-    # I'll remove the top "Welcome" label as the window title and frame are enough.
+    # Text area to display generated script
+    script_display_area = scrolledtext.ScrolledText(content_frame, width=60, height=10, wrap=tk.WORD)
+    script_display_area.pack(pady=(0,10), padx=5, fill=tk.BOTH, expand=True)
+    script_display_area.insert(tk.INSERT, "Generated script will appear here...")
+    script_display_area.configure(state='disabled') # Make it read-only initially
+
+    # Removed redundant comments about reordering as the code now reflects the correct order.
 
     # Start the Tkinter event loop
     root.mainloop()
